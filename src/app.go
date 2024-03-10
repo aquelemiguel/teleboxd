@@ -22,13 +22,17 @@ func main() {
 	}
 
 	token := os.Getenv("TELEGRAM_BOT_TOKEN")
-
-	// initialize the database
-	_, err = database.InitDatabase()
-	if err != nil {
-		log.Fatal("failed to initialize the database:", err.Error())
+	if token == "" {
+		log.Fatal("TELEGRAM_BOT_TOKEN env var must be set")
 	}
 
+	// initialize the database
+	_, err = database.GetDatabase()
+	if err != nil {
+		log.Fatal("failed to initialize database:", err.Error())
+	}
+
+	// initialize the telegram bot
 	b, err := gotgbot.NewBot(token, nil)
 	if err != nil {
 		log.Fatal("failed to create a new bot", err.Error())
