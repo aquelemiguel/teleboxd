@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"errors"
 	"fmt"
 	"groundhog/src/database"
 	"groundhog/src/locales"
@@ -19,7 +20,7 @@ func Track(b *gotgbot.Bot, ctx *ext.Context) error {
 	}
 
 	_, err := database.CreateMember(args[1], ctx.EffectiveChat.Id)
-	if err != nil {
+	if errors.Is(err, database.ErrUserNotFound) {
 		message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.AlreadyTracking, args[1]))
 		return nil
 	}

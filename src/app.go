@@ -49,6 +49,7 @@ func main() {
 	updater := ext.NewUpdater(dispatcher, nil)
 
 	dispatcher.AddHandler(handlers.NewCommand("track", commands.Track))
+	dispatcher.AddHandler(handlers.NewCommand("untrack", commands.Untrack))
 
 	err = updater.StartPolling(b, &ext.PollingOpts{
 		DropPendingUpdates: true,
