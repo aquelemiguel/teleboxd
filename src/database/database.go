@@ -56,6 +56,7 @@ func initDatabase() (*sql.DB, error) {
 			WHERE id = OLD.user_id AND NOT EXISTS (
 				SELECT 1 FROM members
 				WHERE user_id = OLD.user_id
+			);
 		END
 	`)
 	if err != nil {
@@ -70,6 +71,7 @@ func initDatabase() (*sql.DB, error) {
 			WHERE id = OLD.chat_id AND NOT EXISTS (
 				SELECT 1 FROM members
 				WHERE chat_id = OLD.chat_id
+			);
 		END
 	`)
 	if err != nil {
