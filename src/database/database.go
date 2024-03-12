@@ -48,6 +48,34 @@ func initDatabase() (*sql.DB, error) {
 		log.Fatal("failed to create members table:", err.Error())
 	}
 
+	_, err = db.Exec(`
+		CREATE TRIGGER IF NOT EXISTS delete_user
+		AFTER DELETE ON members
+		BEGIN
+			DELETE FROM users
+			WHERE id = OLD.user_id AND NOT EXISTS (
+				SELECT 1 FROM members
+				WHERE user_id = OLD.user_id
+		END
+	`)
+	if err != nil {
+		log.Fatal("failed to create delete_user trigger:", err.Error())
+	}
+
+	_, err = db.Exec(`
+		CREATE TRIGGER IF NOT EXISTS delete_chat
+		AFTER DELETE ON members
+		BEGIN
+			DELETE FROM chats
+			WHERE id = OLD.chat_id AND NOT EXISTS (
+				SELECT 1 FROM members
+				WHERE chat_id = OLD.chat_id
+		END
+	`)
+	if err != nil {
+		log.Fatal("failed to create delete_chat trigger:", err.Error())
+	}
+
 	return db, nil
 }
 
