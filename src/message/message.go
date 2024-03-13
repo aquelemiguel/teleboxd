@@ -8,7 +8,7 @@ import (
 
 func SendMessage(b *gotgbot.Bot, chatId int64, message string) (*gotgbot.Message, error) {
 	m, err := b.SendMessage(chatId, message, &gotgbot.SendMessageOpts{
-		ParseMode: "html",
+		ParseMode: "Markdown",
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to send message: %w", err)

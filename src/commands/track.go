@@ -17,6 +17,7 @@ func Track(b *gotgbot.Bot, ctx *ext.Context) error {
 
 	if len(args) != 2 {
 		message.SendMessage(b, ctx.EffectiveChat.Id, locales.InvalidTrackUsage)
+		return nil
 	}
 
 	_, err := database.CreateMember(args[1], ctx.EffectiveChat.Id)
