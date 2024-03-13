@@ -14,12 +14,11 @@ func CreateUser(handle string) (int64, error) {
 	db, _ := GetDatabase()
 	now := time.Now().Unix()
 
-	result, err := db.Exec("INSERT INTO users (handle, last_log_time) VALUES (?, ?)", handle, now)
+	res, err := db.Exec("INSERT INTO users (handle, last_log_time) VALUES (?, ?)", handle, now)
 	if err != nil {
 		return -1, err
 	}
-
-	return result.LastInsertId()
+	return res.LastInsertId()
 }
 
 func GetUser(handle string) (int64, error) {
@@ -30,13 +29,22 @@ func GetUser(handle string) (int64, error) {
 	return id, err
 }
 
-func DeleteUser(handle string) error {
+func UpdateUser(handle string, lastLogTime int64) (int64, error) {
 	db, _ := GetDatabase()
 
-	_, err := db.Exec("DELETE FROM users WHERE handle = ?", handle)
+	res, err := db.Exec("UPDATE users SET last_log_time = ? WHERE handle = ?", lastLogTime, handle)
 	if err != nil {
-		return err
+		return -1, err
 	}
+	return res.RowsAffected()
+}
 
-	return nil
+func DeleteUser(handle string) (int64, error) {
+	db, _ := GetDatabase()
+
+	res, err := db.Exec("DELETE FROM users WHERE handle = ?", handle)
+	if err != nil {
+		return -1, err
+	}
+	return res.RowsAffected()
 }

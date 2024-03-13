@@ -7,6 +7,7 @@ import (
 
 	"groundhog/src/commands"
 	"groundhog/src/database"
+	"groundhog/src/feed"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
@@ -20,6 +21,8 @@ func main() {
 	if err != nil {
 		log.Fatal("error loading .env file")
 	}
+
+	feed.StartPoll("aquelemiguel")
 
 	token := os.Getenv("TELEGRAM_BOT_TOKEN")
 	if token == "" {
@@ -66,5 +69,6 @@ func main() {
 	}
 
 	log.Printf("%s has been started", b.User.Username)
+
 	updater.Idle()
 }
