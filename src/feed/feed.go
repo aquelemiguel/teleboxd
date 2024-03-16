@@ -8,8 +8,12 @@ import (
 	"github.com/mmcdole/gofeed"
 )
 
-// TODO: make a struct for []*LetterboxdItem
-type LetterboxdItem struct {
+// TODO: make a struct for []*LBItem
+type LBFeed struct {
+	Items []*LBItem
+}
+
+type LBItem struct {
 	FilmTitle    string
 	FilmUrl      string
 	FilmYear     string
@@ -18,17 +22,17 @@ type LetterboxdItem struct {
 	WatchedAt    int64
 }
 
-func Fetch(handle string) []*LetterboxdItem {
+func Fetch(handle string) []*LBItem {
 	url := fmt.Sprintf("https://letterboxd.com/%s/rss/", handle)
 	fp := gofeed.NewParser()
 
 	f, err := fp.ParseURL(url)
 	if err != nil {
 		fmt.Println("failed to fetch feed:", err.Error())
-		return []*LetterboxdItem{}
+		return []*LBItem{}
 	}
 
-	var items []*LetterboxdItem
+	var items []*LBItem
 
 	for _, item := range f.Items {
 		if !s.HasPrefix(item.GUID, "letterboxd-watch") {
@@ -36,7 +40,7 @@ func Fetch(handle string) []*LetterboxdItem {
 		}
 
 		ext := item.Extensions["letterboxd"]
-		lbi := &LetterboxdItem{
+		lbi := &LBItem{
 			FilmTitle: ext["filmTitle"][0].Value,
 			FilmUrl: func() string {
 				id := s.Split(item.Link, "/")[5]

@@ -7,7 +7,7 @@ import (
 	"github.com/PaulSonOfLars/gotgbot/v2"
 )
 
-func SendNewFilmMessage(b *gotgbot.Bot, chatId int64, item feed.LetterboxdItem) (*gotgbot.Message, error) {
+func SendNewFilmMessage(b *gotgbot.Bot, chatId int64, item feed.LBItem) (*gotgbot.Message, error) {
 	message := BuildNewFilmEntryMessage(item)
 
 	return send(b, chatId, message, &gotgbot.SendMessageOpts{

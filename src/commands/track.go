@@ -3,6 +3,7 @@ package commands
 import (
 	"errors"
 	"fmt"
+	"groundhog/src/core"
 	"groundhog/src/database"
 	"groundhog/src/locales"
 	"groundhog/src/message"
@@ -24,6 +25,12 @@ func Track(b *gotgbot.Bot, ctx *ext.Context) error {
 	if errors.Is(err, database.ErrUserNotFound) {
 		message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.AlreadyTracking, args[1]))
 		return nil
+	}
+
+	// if this is a fresh user, start polling them
+	ticker := core.GetUserTicker(args[1])
+	if ticker == nil {
+		core.StartPolling(b, args[1])
 	}
 
 	message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.TrackSuccess, args[1]))

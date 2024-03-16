@@ -8,7 +8,7 @@ import (
 	s "strings"
 )
 
-func BuildNewFilmEntryMessage(item feed.LetterboxdItem) string {
+func BuildNewFilmEntryMessage(item feed.LBItem) string {
 	fullStars := int(math.Floor(item.MemberRating))
 	halfStars := int(math.Round(item.MemberRating - float64(fullStars)))
 	stars := s.Repeat("★", fullStars) + s.Repeat("½", halfStars)
