@@ -1,7 +1,6 @@
 package feed
 
 import (
-	"encoding/json"
 	"fmt"
 	"strconv"
 	s "strings"
@@ -36,7 +35,6 @@ func Fetch(handle string) *LBDiary {
 	}
 
 	var items []*LBItem
-
 	for _, item := range f.Items {
 		if !s.HasPrefix(item.GUID, "letterboxd-watch") {
 			continue
@@ -59,9 +57,6 @@ func Fetch(handle string) *LBDiary {
 		}
 		items = append(items, lbi)
 	}
-	j, _ := json.MarshalIndent(f, "", "  ")
-	fmt.Println(string(j))
-
 	diary := &LBDiary{
 		MemberName:   s.Split(f.Title, " - ")[1],
 		MemberHandle: s.Split(f.Link, "/")[3],

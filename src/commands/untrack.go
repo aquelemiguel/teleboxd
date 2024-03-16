@@ -3,6 +3,7 @@ package commands
 import (
 	"errors"
 	"fmt"
+	"groundhog/src/core"
 	"groundhog/src/database"
 	"groundhog/src/locales"
 	"groundhog/src/message"
@@ -19,13 +20,20 @@ func Untrack(b *gotgbot.Bot, ctx *ext.Context) error {
 		message.SendMessage(b, ctx.EffectiveChat.Id, locales.InvalidUntrackUsage)
 		return nil
 	}
+	handle := args[1]
 
-	err := database.DeleteMember(args[1], ctx.EffectiveChat.Id)
+	err := database.DeleteMember(handle, ctx.EffectiveChat.Id)
 	if errors.Is(err, database.ErrUserNotFound) {
-		message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.NotTracking, args[1]))
+		message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.NotTracking, handle))
 		return nil
 	}
 
-	message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.UntrackSuccess, args[1]))
+	// if this is the user's last chat, stop polling them
+	chats, _ := database.GetChatsByUser(handle)
+	if len(chats) == 0 {
+		core.StopPolling(handle)
+	}
+
+	message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.UntrackSuccess, handle))
 	return nil
 }

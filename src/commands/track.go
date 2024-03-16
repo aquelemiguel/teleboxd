@@ -20,19 +20,20 @@ func Track(b *gotgbot.Bot, ctx *ext.Context) error {
 		message.SendMessage(b, ctx.EffectiveChat.Id, locales.InvalidTrackUsage)
 		return nil
 	}
+	handle := args[1]
 
-	_, err := database.CreateMember(args[1], ctx.EffectiveChat.Id)
+	_, err := database.CreateMember(handle, ctx.EffectiveChat.Id)
 	if errors.Is(err, database.ErrUserNotFound) {
-		message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.AlreadyTracking, args[1]))
+		message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.AlreadyTracking, handle))
 		return nil
 	}
 
 	// if this is a fresh user, start polling them
-	ticker := core.GetUserTicker(args[1])
+	ticker := core.GetUserTicker(handle)
 	if ticker == nil {
-		core.StartPolling(b, args[1])
+		core.StartPolling(b, handle)
 	}
 
-	message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.TrackSuccess, args[1]))
+	message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.TrackSuccess, handle))
 	return nil
 }

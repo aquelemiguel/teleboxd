@@ -20,6 +20,7 @@ func StartPolling(b *gotgbot.Bot, handle string) *time.Ticker {
 		for now := range ticker.C {
 			// TODO: handle this error
 			f := feed.Fetch(handle)
+			log.Printf("fetched %d items for user @%s", len(f.Items), handle)
 
 			// fetch the last polling time
 			_, err := database.GetUser(handle)
@@ -27,7 +28,6 @@ func StartPolling(b *gotgbot.Bot, handle string) *time.Ticker {
 				// TODO: implement retries in the future
 				continue
 			}
-
 			// use it to filter the items by unseen
 			var unseen []*feed.LBItem
 			for _, item := range f.Items {
@@ -35,20 +35,17 @@ func StartPolling(b *gotgbot.Bot, handle string) *time.Ticker {
 					unseen = append(unseen, item)
 				}
 			}
-
 			// if there are no new items, we're done here
 			if len(unseen) == 0 {
 				log.Printf("no new items for user @%s", handle)
 				continue
 			}
-
 			// fetch chats that are subscribed to this feed
 			chats, err := database.GetChatsByUser(handle)
 			if err != nil {
 				// TODO: implement retries in the future
 				continue
 			}
-
 			// send the new items to the chats
 			for _, chatId := range chats {
 				for _, item := range unseen {
@@ -56,12 +53,21 @@ func StartPolling(b *gotgbot.Bot, handle string) *time.Ticker {
 					message.SendNewFilmMessage(b, chatId, *f, *item)
 				}
 			}
-
 			// TODO: this should only be updated if all messages were sent successfully
 			database.UpdateUser(handle, now.Unix())
 		}
 	}()
 	return ticker
+}
+
+func StopPolling(handle string) bool {
+	ticker := pool[handle]
+	if ticker == nil {
+		return false
+	}
+	ticker.Stop()
+	delete(pool, handle)
+	return true
 }
 
 func GetUserTicker(handle string) *time.Ticker {
