@@ -7,5 +7,5 @@ const (
 	UntrackSuccess      = "Successfully stopped tracking @%v!"
 	NotTracking         = "I'm not tracking @%v!"
 	InvalidUntrackUsage = "Invalid usage of /untrack command. Usage: /untrack <username>."
-	NewTrackEntry       = "🎬 %v just watched [%v](%v) (%v) and rated it %v."
+	NewFilmEntry        = "🎬 <b><a href=\"%v\">@%v</a></b> just watched <b><a href=\"%v\">%v (%v)</a></b> and rated it %v."
 )

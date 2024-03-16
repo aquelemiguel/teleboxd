@@ -26,7 +26,7 @@ func Revive(b *gotgbot.Bot) {
 }
 
 func StartPolling(b *gotgbot.Bot, handle string) *time.Ticker {
-	ticker := time.NewTicker(10 * time.Second)
+	ticker := time.NewTicker(5 * time.Second)
 
 	go func() {
 		for now := range ticker.C {
@@ -34,7 +34,7 @@ func StartPolling(b *gotgbot.Bot, handle string) *time.Ticker {
 			f := feed.Fetch(handle)
 
 			// fetch the last polling time
-			user, err := database.GetUser(handle)
+			_, err := database.GetUser(handle)
 			if err != nil {
 				// TODO: implement retries in the future
 				continue
@@ -43,7 +43,7 @@ func StartPolling(b *gotgbot.Bot, handle string) *time.Ticker {
 			// use it to filter the items by unseen
 			var unseen []*feed.LetterboxdItem
 			for _, item := range f {
-				if item.WatchedAt > user.LastLogTime {
+				if item.WatchedAt > now.AddDate(0, 0, -7).Unix() {
 					unseen = append(unseen, item)
 				}
 			}
@@ -64,10 +64,8 @@ func StartPolling(b *gotgbot.Bot, handle string) *time.Ticker {
 			// send the new items to the chats
 			for _, chatId := range chats {
 				for _, item := range unseen {
-					s := message.BuildNewTrackEntryMessage(*item)
-
 					// TODO: handle fail states here
-					message.SendMessage(b, chatId, s)
+					message.SendNewFilmMessage(b, chatId, *item)
 				}
 			}
 
