@@ -21,12 +21,29 @@ func CreateUser(handle string) (int64, error) {
 	return res.LastInsertId()
 }
 
-func GetUser(handle string) (int64, error) {
+func GetUser(handle string) (User, error) {
 	db, _ := GetDatabase()
 
-	var id int64
-	err := db.QueryRow("SELECT id FROM users WHERE handle = ?", handle).Scan(&id)
-	return id, err
+	var user User
+	err := db.QueryRow("SELECT * FROM users WHERE handle = ?", handle).Scan(&user.Id, &user.Handle, &user.LastLogTime)
+	return user, err
+}
+
+func GetAllUsers() ([]User, error) {
+	db, _ := GetDatabase()
+
+	rows, err := db.Query("SELECT * FROM users")
+	if err != nil {
+		return nil, err
+	}
+
+	var users []User
+	for rows.Next() {
+		var user User
+		rows.Scan(&user.Id, &user.Handle, &user.LastLogTime)
+		users = append(users, user)
+	}
+	return users, nil
 }
 
 func UpdateUser(handle string, lastLogTime int64) (int64, error) {
