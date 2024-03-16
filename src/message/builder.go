@@ -8,16 +8,15 @@ import (
 	s "strings"
 )
 
-func BuildNewFilmEntryMessage(item feed.LBItem) string {
+func BuildNewFilmEntryMessage(diary feed.LBDiary, item feed.LBItem) string {
 	fullStars := int(math.Floor(item.MemberRating))
 	halfStars := int(math.Round(item.MemberRating - float64(fullStars)))
 	stars := s.Repeat("★", fullStars) + s.Repeat("½", halfStars)
 
 	s := fmt.Sprintf(
 		locales.NewFilmEntry,
-		// TODO: replace this with the user's handle
-		"https://letterboxd.com/aquelemiguel/",
-		"aquelemiguel",
+		diary.MemberLink,
+		diary.MemberName,
 		item.FilmUrl,
 		item.FilmTitle,
 		item.FilmYear,

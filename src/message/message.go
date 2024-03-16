@@ -7,8 +7,8 @@ import (
 	"github.com/PaulSonOfLars/gotgbot/v2"
 )
 
-func SendNewFilmMessage(b *gotgbot.Bot, chatId int64, item feed.LBItem) (*gotgbot.Message, error) {
-	message := BuildNewFilmEntryMessage(item)
+func SendNewFilmMessage(b *gotgbot.Bot, chatId int64, diary feed.LBDiary, item feed.LBItem) (*gotgbot.Message, error) {
+	message := BuildNewFilmEntryMessage(diary, item)
 
 	return send(b, chatId, message, &gotgbot.SendMessageOpts{
 		ParseMode: "HTML",

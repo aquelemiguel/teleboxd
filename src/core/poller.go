@@ -53,7 +53,7 @@ func StartPolling(b *gotgbot.Bot, handle string) *time.Ticker {
 			for _, chatId := range chats {
 				for _, item := range unseen {
 					// TODO: handle fail states here
-					message.SendNewFilmMessage(b, chatId, *item)
+					message.SendNewFilmMessage(b, chatId, *f, *item)
 				}
 			}
 
