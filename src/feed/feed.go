@@ -1,35 +1,21 @@
 package feed
 
 import (
-	"encoding/json"
 	"fmt"
-	"groundhog/src/database"
 	"strconv"
 	s "strings"
-	"time"
 
 	"github.com/mmcdole/gofeed"
 )
 
+// TODO: make a struct for []*LetterboxdItem
 type LetterboxdItem struct {
 	FilmTitle    string
 	FilmUrl      string
 	FilmYear     string
-	MemberRating float32
+	MemberRating float64
 	Rewatch      bool
 	WatchedAt    int64
-}
-
-func StartPoll(handle string) *time.Ticker {
-	ticker := time.NewTicker(10 * time.Second)
-
-	go func() {
-		for now := range ticker.C {
-			fmt.Println("fetching feed at", now)
-			database.UpdateUser(handle, now.Unix())
-		}
-	}()
-	return ticker
 }
 
 func Fetch(handle string) []*LetterboxdItem {
@@ -57,17 +43,17 @@ func Fetch(handle string) []*LetterboxdItem {
 				return fmt.Sprintf("https://letterboxd.com/film/%s", id)
 			}(),
 			FilmYear: ext["filmYear"][0].Value,
-			MemberRating: func() float32 {
-				rating, _ := strconv.ParseFloat(ext["memberRating"][0].Value, 32)
-				return float32(rating)
+			MemberRating: func() float64 {
+				rating, _ := strconv.ParseFloat(ext["memberRating"][0].Value, 64)
+				return rating
 			}(),
 			Rewatch:   ext["rewatch"][0].Value == "Yes",
 			WatchedAt: item.PublishedParsed.Unix(),
 		}
 		items = append(items, lbi)
 
-		j, _ := json.MarshalIndent(lbi, "", "  ")
-		fmt.Println(string(j))
+		// j, _ := json.MarshalIndent(lbi, "", "  ")
+		// fmt.Println(string(j))
 	}
 	return items
 }
