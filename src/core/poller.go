@@ -30,7 +30,7 @@ func StartPolling(b *gotgbot.Bot, handle string) *time.Ticker {
 
 			// use it to filter the items by unseen
 			var unseen []*feed.LBItem
-			for _, item := range f {
+			for _, item := range f.Items {
 				if item.WatchedAt > now.AddDate(0, 0, -7).Unix() {
 					unseen = append(unseen, item)
 				}

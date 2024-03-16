@@ -1,6 +1,7 @@
 package feed
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 	s "strings"
@@ -8,9 +9,11 @@ import (
 	"github.com/mmcdole/gofeed"
 )
 
-// TODO: make a struct for []*LBItem
-type LBFeed struct {
-	Items []*LBItem
+type LBDiary struct {
+	MemberName   string
+	MemberHandle string
+	MemberLink   string
+	Items        []*LBItem
 }
 
 type LBItem struct {
@@ -22,14 +25,14 @@ type LBItem struct {
 	WatchedAt    int64
 }
 
-func Fetch(handle string) []*LBItem {
+func Fetch(handle string) *LBDiary {
 	url := fmt.Sprintf("https://letterboxd.com/%s/rss/", handle)
 	fp := gofeed.NewParser()
 
 	f, err := fp.ParseURL(url)
 	if err != nil {
 		fmt.Println("failed to fetch feed:", err.Error())
-		return []*LBItem{}
+		return &LBDiary{}
 	}
 
 	var items []*LBItem
@@ -55,9 +58,17 @@ func Fetch(handle string) []*LBItem {
 			WatchedAt: item.PublishedParsed.Unix(),
 		}
 		items = append(items, lbi)
-
-		// j, _ := json.MarshalIndent(lbi, "", "  ")
-		// fmt.Println(string(j))
 	}
-	return items
+	j, _ := json.MarshalIndent(f, "", "  ")
+	fmt.Println(string(j))
+
+	diary := &LBDiary{
+		MemberName:   s.Split(f.Title, " - ")[1],
+		MemberHandle: s.Split(f.Link, "/")[3],
+		MemberLink:   f.Link,
+		Items:        items,
+	}
+	// j, _ := json.MarshalIndent(diary, "", "  ")
+	// fmt.Println(string(j))
+	return diary
 }
