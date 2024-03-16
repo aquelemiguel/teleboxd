@@ -29,7 +29,24 @@ func GetUser(handle string) (User, error) {
 	return user, err
 }
 
-func GetAllUsers() ([]User, error) {
+func GetUsersByChat(chatId int64) ([]*User, error) {
+	db, _ := GetDatabase()
+
+	rows, err := db.Query("SELECT * FROM users WHERE id IN (SELECT user_id FROM members WHERE chat_id = ?)", chatId)
+	if err != nil {
+		return nil, err
+	}
+
+	var users []*User
+	for rows.Next() {
+		var user User
+		rows.Scan(&user.Id, &user.Handle, &user.LastLogTime)
+		users = append(users, &user)
+	}
+	return users, nil
+}
+
+func GetAllUsers() ([]*User, error) {
 	db, _ := GetDatabase()
 
 	rows, err := db.Query("SELECT * FROM users")
@@ -37,11 +54,11 @@ func GetAllUsers() ([]User, error) {
 		return nil, err
 	}
 
-	var users []User
+	var users []*User
 	for rows.Next() {
 		var user User
 		rows.Scan(&user.Id, &user.Handle, &user.LastLogTime)
-		users = append(users, user)
+		users = append(users, &user)
 	}
 	return users, nil
 }
