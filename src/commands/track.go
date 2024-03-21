@@ -24,7 +24,7 @@ func Track(b *gotgbot.Bot, ctx *ext.Context) error {
 
 	_, err := database.CreateMember(handle, ctx.EffectiveChat.Id)
 	if errors.Is(err, database.ErrUserAlreadyExists) {
-		message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.AlreadyTracking, handle))
+		message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.AlreadyTracking, handle, handle))
 		return nil
 	}
 
@@ -34,6 +34,6 @@ func Track(b *gotgbot.Bot, ctx *ext.Context) error {
 		core.StartPolling(b, handle)
 	}
 
-	message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.TrackSuccess, handle))
+	message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.TrackSuccess, handle, handle))
 	return nil
 }

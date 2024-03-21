@@ -24,7 +24,7 @@ func Untrack(b *gotgbot.Bot, ctx *ext.Context) error {
 
 	err := database.DeleteMember(handle, ctx.EffectiveChat.Id)
 	if errors.Is(err, database.ErrUserNotFound) {
-		message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.NotTracking, handle))
+		message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.NotTracking, handle, handle))
 		return nil
 	}
 
@@ -34,6 +34,6 @@ func Untrack(b *gotgbot.Bot, ctx *ext.Context) error {
 		core.StopPolling(handle)
 	}
 
-	message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.UntrackSuccess, handle))
+	message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.UntrackSuccess, handle, handle))
 	return nil
 }
