@@ -24,14 +24,13 @@ type LBItem struct {
 	WatchedAt    int64
 }
 
-func Fetch(handle string) *LBDiary {
+func Fetch(handle string) (*LBDiary, error) {
 	url := fmt.Sprintf("https://letterboxd.com/%s/rss/", handle)
 	fp := gofeed.NewParser()
 
 	f, err := fp.ParseURL(url)
 	if err != nil {
-		fmt.Println("failed to fetch feed:", err.Error())
-		return &LBDiary{}
+		return nil, err
 	}
 
 	var items []*LBItem
@@ -65,5 +64,5 @@ func Fetch(handle string) *LBDiary {
 	}
 	// j, _ := json.MarshalIndent(diary, "", "  ")
 	// fmt.Println(string(j))
-	return diary
+	return diary, nil
 }

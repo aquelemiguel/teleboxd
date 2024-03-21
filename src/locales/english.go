@@ -2,6 +2,7 @@ package locales
 
 const (
 	TrackSuccess        = "Started tracking <b><a href=\"https://letterboxd.com/%s\">@%s</a></b>'s diary!"
+	TrackInvalidUser    = "<b><a href=\"https://letterboxd.com/%s\">@%s</a></b> is not a valid Letterboxd user!"
 	AlreadyTracking     = "I'm already tracking <b><a href=\"https://letterboxd.com/%s\">@%s</a></b>'s diary!"
 	InvalidTrackUsage   = "Invalid usage of /track command!\nUsage: <code>/track &lt;handle&gt;</code>"
 	UntrackSuccess      = "Stopped tracking <b><a href=\"https://letterboxd.com/%s\">@%s</a></b>'s diary!"

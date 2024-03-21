@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"groundhog/src/core"
 	"groundhog/src/database"
+	"groundhog/src/feed"
 	"groundhog/src/locales"
 	"groundhog/src/message"
 	s "strings"
@@ -22,7 +23,14 @@ func Track(b *gotgbot.Bot, ctx *ext.Context) error {
 	}
 	handle := args[1]
 
-	_, err := database.CreateMember(handle, ctx.EffectiveChat.Id)
+	// ensure the user is a valid Letterboxd user
+	_, err := feed.Fetch(handle)
+	if err != nil {
+		message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.TrackInvalidUser, handle, handle))
+		return nil
+	}
+
+	_, err = database.CreateMember(handle, ctx.EffectiveChat.Id)
 	if errors.Is(err, database.ErrUserAlreadyExists) {
 		message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.AlreadyTracking, handle, handle))
 		return nil

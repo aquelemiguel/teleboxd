@@ -19,7 +19,7 @@ func StartPolling(b *gotgbot.Bot, handle string) *time.Ticker {
 	go func() {
 		for now := range ticker.C {
 			// TODO: handle this error
-			f := feed.Fetch(handle)
+			f, _ := feed.Fetch(handle)
 			log.Printf("fetched %d items for user @%s", len(f.Items), handle)
 
 			// fetch the last polling time
