@@ -12,23 +12,16 @@ import (
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	err := godotenv.Load()
-
-	if err != nil {
-		log.Fatal("error loading .env file")
-	}
-
 	token := os.Getenv("TELEGRAM_BOT_TOKEN")
 	if token == "" {
 		log.Fatal("TELEGRAM_BOT_TOKEN env var must be set")
 	}
 
 	// initialize the database
-	_, err = database.GetDatabase()
+	_, err := database.GetDatabase()
 	if err != nil {
 		log.Fatal("failed to initialize database:", err.Error())
 	}

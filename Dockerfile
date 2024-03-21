@@ -11,9 +11,6 @@ RUN go mod download
 WORKDIR /app/src
 COPY ./src .
 
-# also copy the environment file
-COPY .env .
-
 # build the app
 RUN go build -o /groundhog
 
