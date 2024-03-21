@@ -48,6 +48,9 @@ func Fetch(handle string) (*LBDiary, error) {
 			}(),
 			FilmYear: ext["filmYear"][0].Value,
 			MemberRating: func() float64 {
+				if ext["memberRating"] == nil {
+					return 0
+				}
 				rating, _ := strconv.ParseFloat(ext["memberRating"][0].Value, 64)
 				return rating
 			}(),

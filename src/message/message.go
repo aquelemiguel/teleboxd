@@ -5,13 +5,25 @@ import (
 	"groundhog/src/database"
 	"groundhog/src/feed"
 	"groundhog/src/locales"
+	"math"
+	s "strings"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
 )
 
 func SendNewFilmMessage(b *gotgbot.Bot, chatId int64, diary feed.LBDiary, item feed.LBItem) (*gotgbot.Message, error) {
-	message := BuildNewFilmEntryMessage(diary, item)
+	// build the message
+	var message string
+
+	if item.MemberRating != 0 {
+		full := int(math.Floor(item.MemberRating))
+		half := int(math.Round(item.MemberRating - float64(full)))
+		stars := s.Repeat("★", full) + s.Repeat("½", half)
+		message = fmt.Sprintf(locales.NewFilmEntry, diary.MemberLink, diary.MemberName, item.FilmUrl, item.FilmTitle, item.FilmYear, stars)
+	} else {
+		message = fmt.Sprintf(locales.NewFilmEntryNoRating, diary.MemberLink, diary.MemberName, item.FilmUrl, item.FilmTitle, item.FilmYear)
+	}
 
 	return send(b, chatId, message, &gotgbot.SendMessageOpts{
 		ParseMode: "HTML",
