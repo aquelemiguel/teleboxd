@@ -21,7 +21,7 @@ func CreateMember(handle string, chatId int64) (int64, error) {
 
 	res, err := db.Exec("INSERT INTO members (user_id, chat_id) VALUES (?, ?)", userId, chatId)
 	if err != nil {
-		return -1, err
+		return -1, ErrUserAlreadyExists
 	}
 	return res.LastInsertId()
 }

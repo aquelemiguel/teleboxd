@@ -23,7 +23,7 @@ func Track(b *gotgbot.Bot, ctx *ext.Context) error {
 	handle := args[1]
 
 	_, err := database.CreateMember(handle, ctx.EffectiveChat.Id)
-	if errors.Is(err, database.ErrUserNotFound) {
+	if errors.Is(err, database.ErrUserAlreadyExists) {
 		message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.AlreadyTracking, handle))
 		return nil
 	}

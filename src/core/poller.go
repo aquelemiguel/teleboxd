@@ -13,7 +13,7 @@ import (
 var pool = make(map[string]*time.Ticker)
 
 func StartPolling(b *gotgbot.Bot, handle string) *time.Ticker {
-	ticker := time.NewTicker(5 * time.Second)
+	ticker := time.NewTicker(30 * time.Minute)
 	pool[handle] = ticker
 
 	go func() {
