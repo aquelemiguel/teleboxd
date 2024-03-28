@@ -2,10 +2,8 @@ package commands
 
 import (
 	"errors"
-	"fmt"
 	"groundhog/src/core"
 	"groundhog/src/database"
-	"groundhog/src/locales"
 	"groundhog/src/message"
 	s "strings"
 
@@ -17,14 +15,14 @@ func Untrack(b *gotgbot.Bot, ctx *ext.Context) error {
 	args := s.Split(ctx.EffectiveMessage.Text, " ")
 
 	if len(args) != 2 {
-		message.SendMessage(b, ctx.EffectiveChat.Id, locales.InvalidUntrackUsage)
+		message.SendInvalidUntrackUsage(b, ctx.EffectiveChat.Id)
 		return nil
 	}
 	handle := args[1]
 
 	err := database.DeleteMember(handle, ctx.EffectiveChat.Id)
 	if errors.Is(err, database.ErrUserNotFound) {
-		message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.NotTracking, handle, handle))
+		message.SendNotTracking(b, ctx.EffectiveChat.Id, handle)
 		return nil
 	}
 
@@ -34,6 +32,6 @@ func Untrack(b *gotgbot.Bot, ctx *ext.Context) error {
 		core.StopPolling(handle)
 	}
 
-	message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.UntrackSuccess, handle, handle))
+	message.SendUntrackSuccess(b, ctx.EffectiveChat.Id, handle)
 	return nil
 }

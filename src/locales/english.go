@@ -1,16 +1,16 @@
 package locales
 
 const (
-	TrackSuccess         = "Started tracking <b><a href=\"https://letterboxd.com/%s\">@%s</a></b>'s diary!"
-	TrackInvalidUser     = "<b><a href=\"https://letterboxd.com/%s\">@%s</a></b> is not a valid Letterboxd user!"
-	AlreadyTracking      = "I'm already tracking <b><a href=\"https://letterboxd.com/%s\">@%s</a></b>'s diary!"
-	InvalidTrackUsage    = "Invalid usage of /track command!\nUsage: <code>/track &lt;handle&gt;</code>"
-	UntrackSuccess       = "Stopped tracking <b><a href=\"https://letterboxd.com/%s\">@%s</a></b>'s diary!"
-	NotTracking          = "I'm not tracking <b><a href=\"https://letterboxd.com/%s\">@%s</a></b>'s diary!"
-	InvalidUntrackUsage  = "Invalid usage of /untrack command!\nUsage: <code>/untrack &lt;handle&gt;</code>"
-	NewFilmEntry         = "🎬 <b><a href=\"%v\">%v</a></b> just watched <b><a href=\"%v\">%v (%v)</a></b> and rated it %v."
-	NewFilmEntryNoRating = "🎬 <b><a href=\"%v\">%v</a></b> just watched <b><a href=\"%v\">%v (%v)</a></b>."
-	ListHeader           = "I'm tracking these Letterboxd users:\n"
-	ListHeaderEmpty      = "I'm not tracking any users!\nUsage: <code>/track &lt;handle&gt;</code>"
+	TrackSuccess         = "&#9989; Started tracking <b><a href=\"https://letterboxd.com/%s\">%s</a></b>'s diary!"
+	TrackInvalidUser     = "&#10060; <b><a href=\"https://letterboxd.com/%s\">%s</a></b> is not a valid Letterboxd user!"
+	AlreadyTracking      = "&#10060; I'm already tracking <b><a href=\"https://letterboxd.com/%s\">%s</a></b>'s diary!"
+	InvalidTrackUsage    = "&#10060; Invalid usage of /track command! Usage: <code>/track &lt;handle&gt;</code>."
+	UntrackSuccess       = "&#9989; Stopped tracking <b><a href=\"https://letterboxd.com/%s\">%s</a></b>'s diary!"
+	NotTracking          = "&#10060; I'm not tracking <b><a href=\"https://letterboxd.com/%s\">%s</a></b>'s diary!"
+	InvalidUntrackUsage  = "&#10060; Invalid usage of /untrack command! Usage: <code>/untrack &lt;handle&gt;</code>."
+	NewFilmEntry         = "&#127871; <b><a href=\"%v\">%v</a></b> just watched <b><a href=\"%v\">%v (%v)</a></b> and rated it %v."
+	NewFilmEntryNoRating = "&#127871; <b><a href=\"%v\">%v</a></b> just watched <b><a href=\"%v\">%v (%v)</a></b>."
+	ListHeader           = "&#128466;&#65039; I'm tracking these Letterboxd users:\n"
+	ListHeaderEmpty      = "&#128466;&#65039; I'm not tracking any users!\nUsage: <code>/track &lt;handle&gt;</code>"
 	ListEntry            = "• <b><a href=\"https://letterboxd.com/%s\">%s</a></b>\n"
 )

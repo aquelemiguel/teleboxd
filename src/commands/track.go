@@ -2,11 +2,9 @@ package commands
 
 import (
 	"errors"
-	"fmt"
 	"groundhog/src/core"
 	"groundhog/src/database"
 	"groundhog/src/feed"
-	"groundhog/src/locales"
 	"groundhog/src/message"
 	s "strings"
 
@@ -18,7 +16,7 @@ func Track(b *gotgbot.Bot, ctx *ext.Context) error {
 	args := s.Split(ctx.EffectiveMessage.Text, " ")
 
 	if len(args) != 2 {
-		message.SendMessage(b, ctx.EffectiveChat.Id, locales.InvalidTrackUsage)
+		message.SendInvalidTrackUsage(b, ctx.EffectiveChat.Id)
 		return nil
 	}
 	handle := args[1]
@@ -26,13 +24,13 @@ func Track(b *gotgbot.Bot, ctx *ext.Context) error {
 	// ensure the user is a valid Letterboxd user
 	_, err := feed.Fetch(handle)
 	if err != nil {
-		message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.TrackInvalidUser, handle, handle))
+		message.SendInvalidUser(b, ctx.EffectiveChat.Id, handle)
 		return nil
 	}
 
 	_, err = database.CreateMember(handle, ctx.EffectiveChat.Id)
 	if errors.Is(err, database.ErrUserAlreadyExists) {
-		message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.AlreadyTracking, handle, handle))
+		message.SendAlreadyTracking(b, ctx.EffectiveChat.Id, handle)
 		return nil
 	}
 
@@ -42,6 +40,6 @@ func Track(b *gotgbot.Bot, ctx *ext.Context) error {
 		core.StartPolling(b, handle)
 	}
 
-	message.SendMessage(b, ctx.EffectiveChat.Id, fmt.Sprintf(locales.TrackSuccess, handle, handle))
+	message.SendTrackSuccess(b, ctx.EffectiveChat.Id, handle)
 	return nil
 }
