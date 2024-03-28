@@ -30,8 +30,9 @@ func StartPolling(b *gotgbot.Bot, handle string) *time.Ticker {
 			}
 			// use it to filter the items by unseen
 			var unseen []*feed.LBItem
+			now := now.Unix()
 			for _, item := range f.Items {
-				if item.WatchedAt > now.AddDate(0, 0, -7).Unix() {
+				if item.WatchedAt > now {
 					unseen = append(unseen, item)
 				}
 			}
@@ -54,7 +55,7 @@ func StartPolling(b *gotgbot.Bot, handle string) *time.Ticker {
 				}
 			}
 			// TODO: this should only be updated if all messages were sent successfully
-			database.UpdateUser(handle, now.Unix())
+			database.UpdateUser(handle, now)
 		}
 	}()
 	return ticker
