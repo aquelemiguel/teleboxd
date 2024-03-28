@@ -2,8 +2,10 @@ package feed
 
 import (
 	"fmt"
+	"net/http"
 	"strconv"
 	s "strings"
+	"time"
 
 	"github.com/mmcdole/gofeed"
 )
@@ -28,9 +30,22 @@ func Fetch(handle string) (*LBDiary, error) {
 	url := fmt.Sprintf("https://letterboxd.com/%s/rss/", handle)
 	fp := gofeed.NewParser()
 
-	f, err := fp.ParseURL(url)
+	client := &http.Client{
+		Timeout: time.Second * 10,
+	}
+
+	res, err := client.Get(url)
+	if err != nil || res.StatusCode >= 500 {
+		return nil, ErrSomethingWentWrong
+	}
+	if res.StatusCode == 404 {
+		return nil, ErrUserDoesNotExist
+	}
+	defer res.Body.Close()
+
+	f, err := fp.Parse(res.Body)
 	if err != nil {
-		return nil, err
+		return nil, ErrSomethingWentWrong
 	}
 
 	var items []*LBItem

@@ -24,7 +24,11 @@ func Track(b *gotgbot.Bot, ctx *ext.Context) error {
 	// ensure the user is a valid Letterboxd user
 	_, err := feed.Fetch(handle)
 	if err != nil {
-		message.SendInvalidUser(b, ctx.EffectiveChat.Id, handle)
+		if err == feed.ErrUserDoesNotExist {
+			message.SendInvalidUser(b, ctx.EffectiveChat.Id, handle)
+			return nil
+		}
+		message.SendSomethingWentWrong(b, ctx.EffectiveChat.Id)
 		return nil
 	}
 

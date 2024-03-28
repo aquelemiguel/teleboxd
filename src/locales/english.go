@@ -13,4 +13,5 @@ const (
 	ListHeader           = "&#128466;&#65039; I'm tracking these Letterboxd users:\n"
 	ListHeaderEmpty      = "&#128466;&#65039; I'm not tracking any users!\nUsage: <code>/track &lt;handle&gt;</code>"
 	ListEntry            = "• <b><a href=\"https://letterboxd.com/%s\">%s</a></b>\n"
+	SomethingWentWrong   = "&#10060; Oops, something went wrong! Is Letterboxd down?"
 )
