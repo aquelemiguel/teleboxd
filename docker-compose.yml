@@ -1,0 +1,10 @@
+version: '3'
+services:
+  groundhog:
+    image: groundhog
+    volumes:
+      - db:/app/src/db
+    env_file:
+      - .env
+volumes:
+  db:
