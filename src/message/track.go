@@ -2,10 +2,10 @@ package message
 
 import (
 	"fmt"
-	"groundhog/src/feed"
-	"groundhog/src/locales"
 	"math"
 	s "strings"
+	"teleboxd/src/feed"
+	"teleboxd/src/locales"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
 )

@@ -1,10 +1,10 @@
 package core
 
 import (
-	"groundhog/src/database"
-	"groundhog/src/feed"
-	"groundhog/src/message"
 	"log"
+	"teleboxd/src/database"
+	"teleboxd/src/feed"
+	"teleboxd/src/message"
 	"time"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"

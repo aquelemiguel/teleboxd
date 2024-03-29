@@ -2,11 +2,11 @@ package commands
 
 import (
 	"errors"
-	"groundhog/src/core"
-	"groundhog/src/database"
-	"groundhog/src/feed"
-	"groundhog/src/message"
 	s "strings"
+	"teleboxd/src/core"
+	"teleboxd/src/database"
+	"teleboxd/src/feed"
+	"teleboxd/src/message"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"

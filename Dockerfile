@@ -12,7 +12,7 @@ WORKDIR /app/src
 COPY ./src .
 
 # build the app
-RUN go build -o /groundhog
+RUN go build -o /teleboxd
 
 # run the executable
-CMD ["/groundhog"]
+CMD ["/teleboxd"]

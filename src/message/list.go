@@ -2,8 +2,8 @@ package message
 
 import (
 	"fmt"
-	"groundhog/src/database"
-	"groundhog/src/locales"
+	"teleboxd/src/database"
+	"teleboxd/src/locales"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"

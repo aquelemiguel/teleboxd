@@ -1,7 +1,7 @@
 version: '3'
 services:
-  groundhog:
-    image: groundhog
+  teleboxd:
+    image: teleboxd
     volumes:
       - db:/app/src/db
     env_file:

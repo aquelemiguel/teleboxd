@@ -5,9 +5,9 @@ import (
 	"os"
 	"time"
 
-	"groundhog/src/commands"
-	"groundhog/src/core"
-	"groundhog/src/database"
+	"teleboxd/src/commands"
+	"teleboxd/src/core"
+	"teleboxd/src/database"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"

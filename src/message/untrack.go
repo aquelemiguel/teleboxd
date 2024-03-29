@@ -2,7 +2,7 @@ package message
 
 import (
 	"fmt"
-	"groundhog/src/locales"
+	"teleboxd/src/locales"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
 )

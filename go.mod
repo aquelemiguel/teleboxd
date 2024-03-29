@@ -1,4 +1,4 @@
-module groundhog
+module teleboxd
 
 go 1.22.0
 

@@ -1,8 +1,8 @@
 package core
 
 import (
-	"groundhog/src/database"
 	"log"
+	"teleboxd/src/database"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
 )

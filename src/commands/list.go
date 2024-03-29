@@ -1,8 +1,8 @@
 package commands
 
 import (
-	"groundhog/src/database"
-	"groundhog/src/message"
+	"teleboxd/src/database"
+	"teleboxd/src/message"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
