@@ -23,16 +23,15 @@ func StartPolling(b *gotgbot.Bot, handle string) *time.Ticker {
 			log.Printf("fetched %d items for user @%s", len(f.Items), handle)
 
 			// fetch the last polling time
-			_, err := database.GetUser(handle)
+			user, err := database.GetUser(handle)
 			if err != nil {
 				// TODO: implement retries in the future
 				continue
 			}
 			// use it to filter the items by unseen
 			var unseen []*feed.LBItem
-			now := now.Unix()
 			for _, item := range f.Items {
-				if item.WatchedAt > now {
+				if item.WatchedAt > user.LastLogTime {
 					unseen = append(unseen, item)
 				}
 			}
@@ -55,7 +54,7 @@ func StartPolling(b *gotgbot.Bot, handle string) *time.Ticker {
 				}
 			}
 			// TODO: this should only be updated if all messages were sent successfully
-			database.UpdateUser(handle, now)
+			database.UpdateUser(handle, now.Unix())
 		}
 	}()
 	return ticker
