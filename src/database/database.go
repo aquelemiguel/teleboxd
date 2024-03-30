@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"log"
+	"os"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -10,6 +11,11 @@ import (
 var DB *sql.DB = nil
 
 func initDatabase() (*sql.DB, error) {
+	err := os.MkdirAll("./db", 0755)
+	if err != nil {
+		log.Fatal("failed to create db directory:", err.Error())
+	}
+
 	db, err := sql.Open("sqlite3", "./db/teleboxd.db")
 	if err != nil {
 		log.Fatal("failed to open the database:", err.Error())
