@@ -50,7 +50,8 @@ func Fetch(handle string) (*LBDiary, error) {
 
 	var items []*LBItem
 	for _, item := range f.Items {
-		if !s.HasPrefix(item.GUID, "letterboxd-watch") {
+		entryType := s.Split(item.GUID, "-")[1]
+		if entryType != "watch" && entryType != "review" {
 			continue
 		}
 
@@ -80,7 +81,5 @@ func Fetch(handle string) (*LBDiary, error) {
 		MemberLink:   f.Link,
 		Items:        items,
 	}
-	// j, _ := json.MarshalIndent(diary, "", "  ")
-	// fmt.Println(string(j))
 	return diary, nil
 }
