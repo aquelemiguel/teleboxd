@@ -21,16 +21,35 @@ func SendTrackSuccess(b *gotgbot.Bot, chatId int64, handle string) (*gotgbot.Mes
 }
 
 func SendNewFilmMessage(b *gotgbot.Bot, chatId int64, diary feed.LBDiary, item feed.LBItem) (*gotgbot.Message, error) {
-	var message string
+	var message, template string
+	var stars string
 
 	if item.MemberRating != 0 {
 		full := int(math.Floor(item.MemberRating))
 		half := int(math.Round(item.MemberRating - float64(full)))
-		stars := s.Repeat("★", full) + s.Repeat("½", half)
-		message = fmt.Sprintf(locales.NewFilmEntry, diary.MemberLink, diary.MemberName, item.FilmUrl, item.FilmTitle, item.FilmYear, stars)
-	} else {
-		message = fmt.Sprintf(locales.NewFilmEntryNoRating, diary.MemberLink, diary.MemberName, item.FilmUrl, item.FilmTitle, item.FilmYear)
+		stars = s.Repeat("★", full) + s.Repeat("½", half)
 	}
+	if item.Rewatch {
+		if stars != "" {
+			template = locales.NewFilmRewatchRating
+		} else {
+			template = locales.NewFilmRewatch
+		}
+	} else {
+		if stars != "" {
+			template = locales.NewFilmWatchRating
+		} else {
+			template = locales.NewFilmWatch
+		}
+	}
+
+	args := []interface{}{
+		diary.MemberLink, diary.MemberName, item.FilmUrl, item.FilmTitle, item.FilmYear,
+	}
+	if stars != "" {
+		args = append(args, stars)
+	}
+	message = fmt.Sprintf(template, args...)
 
 	return SendMessage(b, chatId, message, &gotgbot.SendMessageOpts{
 		ParseMode: "HTML",
