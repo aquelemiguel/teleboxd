@@ -18,10 +18,12 @@ func StartPolling(b *gotgbot.Bot, handle string) *time.Ticker {
 
 	go func() {
 		for now := range ticker.C {
-			// TODO: handle this error
-			f, _ := feed.Fetch(handle)
-			log.Printf("fetched %d items for user @%s", len(f.Items), handle)
-
+			log.Printf("polling for user @%s", handle)
+			f, err := feed.Fetch(handle)
+			if err != nil {
+				log.Printf("failed to fetch diary for user @%s", handle)
+				continue
+			}
 			// fetch the last polling time
 			user, err := database.GetUser(handle)
 			if err != nil {
