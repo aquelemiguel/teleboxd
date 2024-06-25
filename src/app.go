@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"os"
 	"time"
 
@@ -58,6 +59,16 @@ func main() {
 	if err != nil {
 		log.Fatal("failed to start polling:", err.Error())
 	}
+
+	// simple health check to help with monitoring
+	go func() {
+		http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("OK"))
+		})
+		log.Fatal(http.ListenAndServe(":8080", nil))
+	}()
+
 	log.Printf("%s has been started", b.User.Username)
 
 	// revive tracking for users already in the db
