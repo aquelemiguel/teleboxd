@@ -1,4 +1,21 @@
 {
   "track_success": "{emoji} Started tracking {handle}'s diary!",
-  "untrack_success": "{emoji} Stopped tracking {handle}'s diary!"
+  "track_invalid_user": "{emoji} {handle} is not a valid Letterboxd user!",
+  "track_duplicate_user": "{emoji} I'm already tracking {handle}'s diary!",
+  "track_bad_usage": "{emoji} Invalid usage of /track command! Usage: {usage}.",
+
+  "untrack_success": "{emoji} Stopped tracking {handle}'s diary!",
+  "untrack_not_tracking_user": "{emoji} I'm not tracking {handle}'s diary!",
+  "untrack_bad_usage": "{emoji} Invalid usage of /untrack command! Usage: {usage}.",
+
+  "new_film_watch": "{emoji} {handle} watched {film}.",
+  "new_film_watch_rating": "{emoji} {handle} watched and rated {film} {rating}.",
+  "new_film_rewatch": "{emoji} {handle} rewatched {film}.",
+  "new_film_rewatch_rating": "{emoji} {handle} rewatched and rated {film} {rating}.",
+
+  "list_header": "{emoji} I'm tracking these Letterboxd users:",
+  "list_header_empty": "{emoji} I'm not tracking any users!",
+  "list_entry": "• {handle}",
+
+  "something_went_wrong": "{emoji} Oops, something went wrong! Maybe Letterboxd is down?"
 }

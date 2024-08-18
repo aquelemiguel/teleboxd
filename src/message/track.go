@@ -1,11 +1,7 @@
 package message
 
 import (
-	"fmt"
-	"math"
-	s "strings"
 	"teleboxd/src/feed"
-	"teleboxd/src/locales"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
 )
@@ -21,35 +17,21 @@ func SendTrackSuccess(b *gotgbot.Bot, chatId int64, handle string) (*gotgbot.Mes
 }
 
 func SendNewFilmMessage(b *gotgbot.Bot, chatId int64, diary feed.LBDiary, item feed.LBItem) (*gotgbot.Message, error) {
-	var message, template string
-	var stars string
+	var message string
 
-	if item.MemberRating != 0 {
-		full := int(math.Floor(item.MemberRating))
-		half := int(math.Round(item.MemberRating - float64(full)))
-		stars = s.Repeat("★", full) + s.Repeat("½", half)
-	}
-	if item.Rewatch {
-		if stars != "" {
-			template = locales.NewFilmRewatchRating
+	if !item.Rewatch {
+		if item.MemberRating != 0 {
+			message = BuildNewFilmWatchRating(diary.MemberHandle, item)
 		} else {
-			template = locales.NewFilmRewatch
+			message = BuildNewFilmWatch(diary.MemberHandle, item)
 		}
 	} else {
-		if stars != "" {
-			template = locales.NewFilmWatchRating
+		if item.MemberRating != 0 {
+			message = BuildNewFilmRewatchRating(diary.MemberHandle, item)
 		} else {
-			template = locales.NewFilmWatch
+			message = BuildNewFilmRewatch(diary.MemberHandle, item)
 		}
 	}
-
-	args := []interface{}{
-		diary.MemberLink, diary.MemberName, item.FilmUrl, item.FilmTitle, item.FilmYear,
-	}
-	if stars != "" {
-		args = append(args, stars)
-	}
-	message = fmt.Sprintf(template, args...)
 
 	return SendMessage(b, chatId, message, &gotgbot.SendMessageOpts{
 		ParseMode: "HTML",
@@ -61,15 +43,16 @@ func SendNewFilmMessage(b *gotgbot.Bot, chatId int64, diary feed.LBDiary, item f
 }
 
 func SendAlreadyTracking(b *gotgbot.Bot, chatId int64, handle string) (*gotgbot.Message, error) {
-	message := fmt.Sprintf(locales.AlreadyTracking, handle, handle)
+	message := BuildTrackDuplicateUser(handle)
 	return SendMessage(b, chatId, message, nil)
 }
 
 func SendInvalidUser(b *gotgbot.Bot, chatId int64, handle string) (*gotgbot.Message, error) {
-	message := fmt.Sprintf(locales.TrackInvalidUser, handle, handle)
+	message := BuildTrackInvalidUser(handle)
 	return SendMessage(b, chatId, message, nil)
 }
 
 func SendInvalidTrackUsage(b *gotgbot.Bot, chatId int64) (*gotgbot.Message, error) {
-	return SendMessage(b, chatId, locales.InvalidTrackUsage, nil)
+	message := BuildTrackBadUsage()
+	return SendMessage(b, chatId, message, nil)
 }
