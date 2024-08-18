@@ -2,45 +2,54 @@ package locales
 
 import (
 	"encoding/json"
-	"fmt"
+	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
-)
-
-var (
-	instance *LocaleData
+	"strings"
+	"sync"
 )
 
 type LocaleData struct {
-	primary map[string]string
-	secondary map[string]string
+	selected string
+	locales map[string](map[string]string)
 }
 
-func LoadLocale(locale string) (bool, error) {
-	if instance == nil {
-		content, err := parseLocale("en-US")
-		if err != nil {
-			return false, err
+var (
+	instance *LocaleData
+	once sync.Once
+)
+
+func LoadLocales() error {
+	var localePaths []string
+
+	filepath.WalkDir("src/locales", func(path string, d fs.DirEntry, err error) error {
+		if strings.HasSuffix(path, ".json") {
+			localePaths = append(localePaths, path)
 		}
-		instance = &LocaleData{secondary: content}
+		return nil
+	})
+
+	for _, localePath := range localePaths {
+		content, err := parseLocale(localePath)
+		if err != nil {
+			return err
+		}
+		instance := getInstance()
+		instance.locales[getLocaleKey(localePath)] = content
 	}
-	content, err := parseLocale(locale)
-	if err != nil {
-		return false, err
-	}
-	instance.primary = content
-	return true, nil
+	return nil
+}
+
+func SetLocale(locale string) {
+	getInstance().selected = locale
 }
 
 func Translate(key string) (string, bool) {
-	if instance == nil {
-		log.Printf("cannot translate without a loaded locale")
-		return "", false
-	}
-	message, ok := instance.primary[key]
+	instance := getInstance()
+	message, ok := instance.locales[instance.selected][key]
 	if !ok {
-		message, ok = instance.secondary[key]
+		message, ok = instance.locales["en-US"][key]
 		if !ok {
 			log.Printf("cannot translate key %s", key)
 			return "", false
@@ -49,8 +58,16 @@ func Translate(key string) (string, bool) {
 	return message, ok
 }
 
-func parseLocale(locale string) (map[string]string, error) {
-	localePath := filepath.Join("src/locales", fmt.Sprintf(("%s.json"), locale))
+func getInstance() *LocaleData {
+	once.Do(func() {
+		instance = &LocaleData{
+			locales: map[string](map[string]string){},
+		}
+	})
+	return instance
+}
+
+func parseLocale(localePath string) (map[string]string, error) {
 	content, err := os.ReadFile(localePath)
 	if err != nil {
 		return nil, err
@@ -62,4 +79,9 @@ func parseLocale(locale string) (map[string]string, error) {
 		return nil, err
 	}
 	return data, nil
+}
+
+func getLocaleKey(path string) string {
+	filename := filepath.Base(path)
+    return strings.TrimSuffix(filename, filepath.Ext(filename))
 }
