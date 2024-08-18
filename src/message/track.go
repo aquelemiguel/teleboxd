@@ -11,7 +11,7 @@ import (
 )
 
 func SendTrackSuccess(b *gotgbot.Bot, chatId int64, handle string) (*gotgbot.Message, error) {
-	message := fmt.Sprintf(locales.TrackSuccess, handle, handle)
+	message := BuildTrackSuccess(handle)
 	return SendMessage(b, chatId, message, &gotgbot.SendMessageOpts{
 		ParseMode: "HTML",
 		LinkPreviewOptions: &gotgbot.LinkPreviewOptions{

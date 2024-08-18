@@ -9,6 +9,7 @@ import (
 	"teleboxd/src/commands"
 	"teleboxd/src/core"
 	"teleboxd/src/database"
+	"teleboxd/src/locales"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
@@ -25,6 +26,19 @@ func main() {
 	_, err := database.GetDatabase()
 	if err != nil {
 		log.Fatal("failed to initialize database:", err.Error())
+	}
+
+	// initialize the locales
+	// todo: temporarily load both locales as english, afterwards we want to
+	// fetch the correct locale based on the chat setting
+	_, err = locales.LoadLocale("en-US", false)
+	if err != nil {
+		log.Fatal("failed to initialize locale:", err.Error())
+	}
+
+	_, err = locales.LoadLocale("en-US", true)
+	if err != nil {
+		log.Fatal("failed to initialize locale:", err.Error())
 	}
 
 	// initialize the telegram bot
