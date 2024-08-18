@@ -29,14 +29,8 @@ func main() {
 	}
 
 	// initialize the locales
-	// todo: temporarily load both locales as english, afterwards we want to
-	// fetch the correct locale based on the chat setting
-	_, err = locales.LoadLocale("en-US", false)
-	if err != nil {
-		log.Fatal("failed to initialize locale:", err.Error())
-	}
-
-	_, err = locales.LoadLocale("en-US", true)
+	// todo: fetch the correct locale based on the chat setting
+	_, err = locales.LoadLocale("pt-PT")
 	if err != nil {
 		log.Fatal("failed to initialize locale:", err.Error())
 	}

@@ -17,16 +17,19 @@ type LocaleData struct {
 	secondary map[string]string
 }
 
-func LoadLocale(locale string, isSecondary bool) (bool, error) {
+func LoadLocale(locale string) (bool, error) {
+	if instance == nil {
+		content, err := ParseLocale("en-US")
+		if err != nil {
+			return false, err
+		}
+		instance = &LocaleData{secondary: content}
+	}
 	content, err := ParseLocale(locale)
 	if err != nil {
 		return false, err
 	}
-	if !isSecondary {
-		instance = &LocaleData{primary: content}
-	} else {
-		instance = &LocaleData{secondary: content}
-	}
+	instance.primary = content
 	return true, nil
 }
 
