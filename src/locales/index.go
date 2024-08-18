@@ -19,33 +19,18 @@ type LocaleData struct {
 
 func LoadLocale(locale string) (bool, error) {
 	if instance == nil {
-		content, err := ParseLocale("en-US")
+		content, err := parseLocale("en-US")
 		if err != nil {
 			return false, err
 		}
 		instance = &LocaleData{secondary: content}
 	}
-	content, err := ParseLocale(locale)
+	content, err := parseLocale(locale)
 	if err != nil {
 		return false, err
 	}
 	instance.primary = content
 	return true, nil
-}
-
-func ParseLocale(locale string) (map[string]string, error) {
-	localePath := filepath.Join("src/locales", fmt.Sprintf(("%s.json"), locale))
-	content, err := os.ReadFile(localePath)
-	if err != nil {
-		return nil, err
-	}
-	
-	var data map[string]string
-	err = json.Unmarshal(content, &data)
-	if err != nil {
-		return nil, err
-	}
-	return data, nil
 }
 
 func Translate(key string) (string, bool) {
@@ -62,4 +47,19 @@ func Translate(key string) (string, bool) {
 		}
 	}
 	return message, ok
+}
+
+func parseLocale(locale string) (map[string]string, error) {
+	localePath := filepath.Join("src/locales", fmt.Sprintf(("%s.json"), locale))
+	content, err := os.ReadFile(localePath)
+	if err != nil {
+		return nil, err
+	}
+	
+	var data map[string]string
+	err = json.Unmarshal(content, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
 }

@@ -8,7 +8,7 @@ import (
 )
 
 func SendUntrackSuccess(b *gotgbot.Bot, chatId int64, handle string) (*gotgbot.Message, error) {
-	message := fmt.Sprintf(locales.UntrackSuccess, handle, handle)
+	message := BuildUntrackSuccess(handle)
 	return SendMessage(b, chatId, message, nil)
 }
 

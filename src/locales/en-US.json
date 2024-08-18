@@ -1,3 +1,4 @@
 {
-  "track_success": "{emoji} Started tracking {handle}'s diary!"
+  "track_success": "{emoji} Started tracking {handle}'s diary!",
+  "untrack_success": "{emoji} Stopped tracking {handle}'s diary!"
 }
