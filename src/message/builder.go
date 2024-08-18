@@ -12,7 +12,7 @@ func BuildTrackSuccess(handle string) string {
 	template, _ := locales.Translate("track_success")
 
 	return replacePlaceholders(template, map[string]string{
-		"emoji": "&#9989;",
+		"emoji": "🎥",
 		"handle": buildHandleLink(handle),
 	})
 }
@@ -21,7 +21,7 @@ func BuildTrackInvalidUser(handle string) string {
 	template, _ := locales.Translate("track_invalid_user")
 
 	return replacePlaceholders(template, map[string]string{
-		"emoji": "&#10060;",
+		"emoji": "🚫",
 		"handle": buildHandleLink(handle),
 	})
 }
@@ -30,7 +30,7 @@ func BuildTrackDuplicateUser(handle string) string {
 	template, _ := locales.Translate("track_duplicate_user")
 
 	return replacePlaceholders(template, map[string]string{
-		"emoji": "&#10060;",
+		"emoji": "🚫",
 		"handle": buildHandleLink(handle),
 	})
 }
@@ -39,7 +39,7 @@ func BuildTrackBadUsage() string {
 	template, _ := locales.Translate("track_bad_usage")
 
 	return replacePlaceholders(template, map[string]string{
-		"emoji": "&#10060;",
+		"emoji": "🚫",
 		"usage": "<code>/track &lt;handle&gt;</code>",
 	})
 }
@@ -48,7 +48,7 @@ func BuildUntrackSuccess(handle string) string {
 	template, _ := locales.Translate("untrack_success")
 
 	return replacePlaceholders(template, map[string]string{
-		"emoji": "&#9989;",
+		"emoji": "🗑️",
 		"handle": buildHandleLink(handle),
 	})
 }
@@ -57,7 +57,7 @@ func BuildUntrackNotTrackingUser(handle string) string {
 	template, _ := locales.Translate("untrack_not_tracking_user")
 
 	return replacePlaceholders(template, map[string]string{
-		"emoji": "&#10060;",
+		"emoji": "🚫",
 		"handle": buildHandleLink(handle),
 	})
 }
@@ -66,7 +66,7 @@ func BuildUntrackBadUsage() string {
 	template, _ := locales.Translate("untrack_bad_usage")
 
 	return replacePlaceholders(template, map[string]string{
-		"emoji": "&#10060;",
+		"emoji": "🚫",
 		"usage": "<code>/untrack &lt;handle&gt;</code>",
 	})
 }
@@ -75,7 +75,7 @@ func BuildNewFilmWatch(handle string, film feed.LBItem) string {
 	template, _ := locales.Translate("new_film_watch")
 
 	return replacePlaceholders(template, map[string]string{
-		"emoji": "&#127871;",
+		"emoji": "🍿",
 		"handle": buildHandleLink(handle),
 		"film": buildFilmLink(film.FilmUrl, film.FilmTitle, film.FilmYear),
 	})
@@ -85,7 +85,7 @@ func BuildNewFilmWatchRating(handle string, film feed.LBItem) string {
 	template, _ := locales.Translate("new_film_watch_rating")
 
 	return replacePlaceholders(template, map[string]string{
-		"emoji": "&#127871;",
+		"emoji": "🍿",
 		"handle": buildHandleLink(handle),
 		"film": buildFilmLink(film.FilmUrl, film.FilmTitle, film.FilmYear),
 		"rating": buildRatingStars(film.MemberRating),
@@ -96,7 +96,7 @@ func BuildNewFilmRewatch(handle string, film feed.LBItem) string {
 	template, _ := locales.Translate("new_film_rewatch")
 
 	return replacePlaceholders(template, map[string]string{
-		"emoji": "&#127871;",
+		"emoji": "🔁",
 		"handle": buildHandleLink(handle),
 		"film": buildFilmLink(film.FilmUrl, film.FilmTitle, film.FilmYear),
 	})
@@ -106,7 +106,7 @@ func BuildNewFilmRewatchRating(handle string, film feed.LBItem) string {
 	template, _ := locales.Translate("new_film_rewatch_rating")
 
 	return replacePlaceholders(template, map[string]string{
-		"emoji": "&#127871;",
+		"emoji": "🔁",
 		"handle": buildHandleLink(handle),
 		"film": buildFilmLink(film.FilmUrl, film.FilmTitle, film.FilmYear),
 		"rating": buildRatingStars(film.MemberRating),
@@ -125,7 +125,7 @@ func BuildListHeaderEmpty() string {
 	template, _ := locales.Translate("list_header_empty")
 
 	return replacePlaceholders(template, map[string]string{
-		"emoji": "&#128466;&#65039;",
+		"emoji": "🎥",
 	})
 }
 
@@ -141,7 +141,7 @@ func BuildSomethingWentWrong() string {
 	template, _ := locales.Translate("something_went_wrong")
 
 	return replacePlaceholders(template, map[string]string{
-		"emoji": "&#10060;",
+		"emoji": "🚫",
 	})
 }
 
